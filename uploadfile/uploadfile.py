@@ -38,7 +38,6 @@ def upload_file():
     main_dir = os.path.join(base_dir, 'file')
     for parent, dirnames, filenames in os.walk(main_dir):
         all_file[parent] = filenames
-    print(all_file)
     return render_template('index.html', form=form, file_url=file_url, allfile=all_file)
 
 
