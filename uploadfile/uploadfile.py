@@ -3,11 +3,10 @@ from flask import Flask, request, redirect, url_for, render_template
 from flask_uploads import UploadSet, ARCHIVES, SCRIPTS, IMAGES, configure_uploads, patch_request_class
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed, FileRequired
+
 from wtforms import SubmitField
 import os
 
-
-SERVER_DIR = 'E:\\tmp\\uploadfile.temp'
 
 app = Flask(__name__)
 app.config['UPLOADS_DEFAULT_DEST'] = 'E:\\tmp\\uploadfile.temp'
@@ -28,17 +27,14 @@ class UploadForm(FlaskForm):
 def upload_file():
     all_file = {}
     form = UploadForm()
-    if form.validate_on_submit():
-        filename = file.save(form.file.data)
-        file_url = file.url(filename)
-    else:
-        file_url = None
     # list all file
     base_dir = app.config.get('UPLOADS_DEFAULT_DEST')
     main_dir = os.path.join(base_dir, 'file')
     for parent, dirnames, filenames in os.walk(main_dir):
-        all_file[parent] = filenames
-    return render_template('index.html', form=form, file_url=file_url, allfile=all_file)
+        for name in filenames:
+            file_url = file.url(name)
+            all_file[name] = file_url
+    return render_template('index.html', form=form, allfile=all_file)
 
 
 if __name__ == '__main__':

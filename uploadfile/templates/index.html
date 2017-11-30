@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <title>Upload File</title>
 <h1>文件上传</h1>
+<body>
 <form method="POST" enctype="multipart/form-data">
      {{ form.hidden_tag() }}
      {{ form.file }}
@@ -9,10 +10,13 @@
      {% endfor %}
      {{ form.submit }}
 </form>
-{% for parentdir,filename in allfile.items() %}
-    {% for file in filename %}
-        {{ file }}
-        </br>
-    {% endfor %}
+<h2>Index of /</h2>
+<hr>
+<pre>
+{% for filename, fileurl in allfile.items() %}
+    <a href="{{ fileurl }}">{{ filename }}</a>
 {% endfor %}
+<hr>
+</pre>
 <button onclick="alert('草你妈了隔壁')">文件太多，清理一下吧</button>
+</body>
