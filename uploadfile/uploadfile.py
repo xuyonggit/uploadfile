@@ -3,7 +3,6 @@ from flask import Flask, request, redirect, url_for, render_template
 from flask_uploads import UploadSet, ARCHIVES, SCRIPTS, IMAGES, configure_uploads, patch_request_class
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed, FileRequired
-
 from wtforms import SubmitField
 import os
 
@@ -27,6 +26,11 @@ class UploadForm(FlaskForm):
 def upload_file():
     all_file = {}
     form = UploadForm()
+    if form.validate_on_submit():
+        filename = file.save(form.file.data)
+        file_url = file.url(filename)
+    else:
+        file_url = None
     # list all file
     base_dir = app.config.get('UPLOADS_DEFAULT_DEST')
     main_dir = os.path.join(base_dir, 'file')
