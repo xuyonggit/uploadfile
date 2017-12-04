@@ -4,7 +4,7 @@ from flask_uploads import UploadSet, ARCHIVES, SCRIPTS, IMAGES, configure_upload
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed, FileRequired
 from wtforms import SubmitField
-import os
+import os, json
 
 
 app = Flask(__name__)
@@ -39,6 +39,20 @@ def upload_file():
             file_url = file.url(name)
             all_file[name] = file_url
     return render_template('index.html', form=form, allfile=all_file)
+
+
+@app.route('/clear', methods=['POST'])
+def clear():
+    data = json.loads(request.form.get('data'))
+    if data['key'] == '123':
+        file_dir = os.path.join(app.config.get('UPLOADS_DEFAULT_DEST'), 'file')
+        for i in os.listdir(file_dir):
+            path_file = os.path.join(file_dir, i)
+            os.remove(path_file)
+        res = '文件清理成功！请刷新查看'
+    else:
+        res = '口令错误，请不要做无谓的尝试！'
+    return res
 
 
 if __name__ == '__main__':

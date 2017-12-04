@@ -1,5 +1,32 @@
 <!DOCTYPE html>
 <title>Upload File</title>
+<head>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript">
+        $(function(){
+            $("#btn").click(function(){
+                var key=$("#key").val();
+                var data={
+                    data:JSON.stringify({
+                        'key':key
+                    }),
+                }
+                    $.ajax({
+                        url:'/clear',
+                        type:'POST',
+                        data:data,
+                        dataType:'json',
+                        success:function (res) {
+                            alert(res.responseText)
+                        },
+                        error:function(res){
+                            alert(res.responseText)
+                        }
+                    })
+            })
+        })
+    </script>
+</head>
 <h1>文件上传</h1>
 <body>
 <form method="POST" enctype="multipart/form-data">
@@ -18,5 +45,6 @@
 {% endfor %}
 <hr>
 </pre>
-<button onclick="alert('草你妈了隔壁')">文件太多，清理一下吧</button>
+<p>清理口令：<input type="text" name="key" id="key"></p>
+<button id="btn">文件太多？清理一下吧！</button><-- 这是按钮
 </body>
