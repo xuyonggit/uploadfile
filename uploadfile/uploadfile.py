@@ -5,10 +5,15 @@ from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed, FileRequired
 from wtforms import SubmitField
 import os, json
+import configparser
 
 
+cf = configparser.ConfigParser()
+cf.read('../config')
+conf = cf.sections()
+bindip = cf.get('app', 'app_bind_ip')
 app = Flask(__name__, static_folder='', static_path='')
-app.config['UPLOADS_DEFAULT_DEST'] = 'E:\\tmp\\uploadfile.temp'
+app.config['UPLOADS_DEFAULT_DEST'] = cf.get('app', 'file_dir')
 app.config['SECRET_KEY'] = 'a random string'
 file = UploadSet('file', ARCHIVES + SCRIPTS + IMAGES)
 configure_uploads(app, file)
@@ -20,7 +25,7 @@ class UploadForm(FlaskForm):
         FileAllowed(file, u'只能上传压缩包和脚本文件！'),
         FileRequired(u'文件未选择！')])
     submit = SubmitField(u'上传')
-123
+
 
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
@@ -56,4 +61,4 @@ def clear():
 
 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1')
+    app.run(host=bindip)
