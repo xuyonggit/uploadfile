@@ -7,7 +7,7 @@ from wtforms import SubmitField
 import os, json
 
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='', static_path='')
 app.config['UPLOADS_DEFAULT_DEST'] = 'E:\\tmp\\uploadfile.temp'
 app.config['SECRET_KEY'] = 'a random string'
 file = UploadSet('file', ARCHIVES + SCRIPTS + IMAGES)
@@ -20,7 +20,7 @@ class UploadForm(FlaskForm):
         FileAllowed(file, u'只能上传压缩包和脚本文件！'),
         FileRequired(u'文件未选择！')])
     submit = SubmitField(u'上传')
-
+123
 
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
@@ -44,7 +44,7 @@ def upload_file():
 @app.route('/clear', methods=['POST'])
 def clear():
     data = json.loads(request.form.get('data'))
-    if data['key'] == '123':
+    if data['key'] == '喜羊羊':
         file_dir = os.path.join(app.config.get('UPLOADS_DEFAULT_DEST'), 'file')
         for i in os.listdir(file_dir):
             path_file = os.path.join(file_dir, i)

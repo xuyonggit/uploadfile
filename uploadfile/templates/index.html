@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <title>Upload File</title>
 <head>
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="static/css/xcConfirm.css"/>
+    <script src="static/js/jquery-1.9.1.js" type="text/javascript" charset="utf-8"></script>
+    <script src="static/js/xcConfirm.js" type="text/javascript" charset="utf-8"></script>
     <script type="text/javascript">
         $(function(){
             $("#btn").click(function(){
@@ -17,10 +19,12 @@
                         data:data,
                         dataType:'json',
                         success:function (res) {
-                            alert(res.responseText)
+                            var txt=res.responseText;
+                            window.wxc.xcConfirm(txt, window.wxc.xcConfirm.typeEnum.confirm);
                         },
                         error:function(res){
-                            alert(res.responseText)
+                            var txt=res.responseText;
+                            window.wxc.xcConfirm(txt, window.wxc.xcConfirm.typeEnum.error);
                         }
                     })
             })
