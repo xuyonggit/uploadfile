@@ -17,13 +17,13 @@
                         url:'/clear',
                         type:'POST',
                         data:data,
-                        dataType:'json',
+                        dataType:'html',
                         success:function (res) {
-                            var txt=res.responseText;
-                            window.wxc.xcConfirm(txt, window.wxc.xcConfirm.typeEnum.confirm);
+                            var txt = '文件清理成功！请刷新查看';
+                            window.wxc.xcConfirm(txt, window.wxc.xcConfirm.typeEnum.success);
                         },
                         error:function(res){
-                            var txt=res.responseText;
+                            var txt='口令错误，请不要做无谓的尝试！';
                             window.wxc.xcConfirm(txt, window.wxc.xcConfirm.typeEnum.error);
                         }
                     })

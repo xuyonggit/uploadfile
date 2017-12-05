@@ -49,9 +49,9 @@ def clear():
         for i in os.listdir(file_dir):
             path_file = os.path.join(file_dir, i)
             os.remove(path_file)
-        res = '文件清理成功！请刷新查看'
+        res = 'success'
     else:
-        res = '口令错误，请不要做无谓的尝试！'
+        res = {'res': 'error'}
     return res
 
 
