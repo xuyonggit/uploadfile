@@ -9,7 +9,7 @@ import configparser
 
 
 cf = configparser.ConfigParser()
-cf.read('../config')
+cf.read('../config', encoding='utf-8')
 conf = cf.sections()
 bindip = cf.get('app', 'app_bind_ip')
 app = Flask(__name__, static_folder='', static_path='')
