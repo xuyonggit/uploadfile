@@ -4,6 +4,9 @@
     <link rel="stylesheet" type="text/css" href="static/css/xcConfirm.css"/>
     <script src="static/js/jquery-1.9.1.js" type="text/javascript" charset="utf-8"></script>
     <script src="static/js/xcConfirm.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+    <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
     <script type="text/javascript">
         $(function(){
             $("#btn").click(function(){
@@ -28,11 +31,51 @@
                         }
                     })
             })
+
+            $('form').on('submit', function (event) {
+                // 显示进度条
+                $('.progress').show();
+                // 阻止元素发生默认的行为，此处用来阻止对表单的提交
+                event.preventDefault();
+                var formData = new FormData(this);
+                // jQuery Ajax 上传文件，关键在于设置：processData 和 contentType
+                $.ajax({
+                    xhr: function () {
+                        var xhr = new XMLHttpRequest();
+                        xhr.upload.addEventListener('progress', function (e) {
+                            if (e.lengthComputable) {
+                                var percent = Math.round(e.loaded * 100 / e.total);
+                                $('.progress-bar').attr('aria-valuenow', percent).css('width', percent + '%').text(percent + '%');
+                            }
+                        });
+                        return xhr;
+                    },
+                    type: 'POST',
+                    url: '/',
+                    cache: false,
+                    data: formData,
+                    // 告诉 jQuery 不要去处理发送的数据
+                    processData: false,
+                    // 告诉 jQuery 不要去设置 Content-Type 请求头
+                    // 因为这里是由 <form> 表单构造的 FormData 对象，且已经声明了属性 enctype="multipart/form-data"，所以设置为 false
+                    contentType: false
+                }).done(function (res) {
+                    alert('上传成功!');
+                    $('.progress').hide();
+                }).fail(function (res) {
+                    alert('上传失败!');
+                });
+            });
         })
     </script>
 </head>
 <h1>文件上传</h1>
 <body>
+<div class="progress" style="display: none;">
+    <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" >
+        0%
+    </div>
+</div>
 <form method="POST" enctype="multipart/form-data">
      {{ form.hidden_tag() }}
      {{ form.file }}
@@ -41,13 +84,12 @@
      {% endfor %}
      {{ form.submit }}
 </form>
+
 <h2>Index of /</h2>
-<hr>
 <pre>
 {% for filename, fileurl in allfile.items() %}
     <a href="{{ fileurl }}">{{ filename }}</a>
 {% endfor %}
-<hr>
 </pre>
 <p>清理口令：<input type="text" name="key" id="key"></p>
 <button id="btn">文件太多？清理一下吧！</button><-- 这是按钮
