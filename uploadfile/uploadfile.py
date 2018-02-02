@@ -6,6 +6,7 @@ from flask_wtf.file import FileField, FileAllowed, FileRequired
 from wtforms import SubmitField
 import os, json
 import configparser
+import hashlib
 
 
 cf = configparser.ConfigParser()
@@ -27,6 +28,14 @@ class UploadForm(FlaskForm):
     submit = SubmitField(u'上传')
 
 
+def getfilemd5(filename):
+    if not os.path.isfile(filename):
+        return
+    with open(filename, 'rb') as f:
+        myhash = hashlib.md5(f.read())
+    return myhash.hexdigest()
+
+
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
     all_file = {}
@@ -41,8 +50,10 @@ def upload_file():
     main_dir = os.path.join(base_dir, 'file')
     for parent, dirnames, filenames in os.walk(main_dir):
         for name in filenames:
+            md5 = getfilemd5(os.path.join(parent, name))
             file_url = file.url(name)
-            all_file[name] = file_url
+            all_file[name] = {'url': file_url, 'md5': md5}
+    print(all_file)
     return render_template('index.html', form=form, allfile=all_file)
 
 

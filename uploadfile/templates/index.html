@@ -99,8 +99,8 @@
 <div class="nav-body-box1">
     <h2>Index of /</h2>
     <pre>
-    {% for filename, fileurl in allfile.items() %}
-        <a href="{{ fileurl }}">{{ filename }}</a>
+    {% for filename, item in allfile.items() %}
+        <a href="{{ item["url"] }}">{{ filename }}</a>  md5:{{ item["md5"] }}
     {% endfor %}
     </pre>
     <p>清理口令：<input type="text" name="key" id="key"></p>
