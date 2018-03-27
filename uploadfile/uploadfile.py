@@ -9,6 +9,7 @@ import configparser
 import hashlib
 
 
+myselfset = ARCHIVES = tuple('war txt'.split())
 cf = configparser.ConfigParser()
 cf.read('../config', encoding='utf-8')
 conf = cf.sections()
@@ -16,7 +17,7 @@ bindip = cf.get('app', 'app_bind_ip')
 app = Flask(__name__, static_folder='', static_path='')
 app.config['UPLOADS_DEFAULT_DEST'] = cf.get('app', 'file_dir')
 app.config['SECRET_KEY'] = 'a random string'
-file = UploadSet('file', ARCHIVES + SCRIPTS + IMAGES)
+file = UploadSet('file', ARCHIVES + SCRIPTS + IMAGES + myselfset)
 configure_uploads(app, file)
 patch_request_class(app, size=64 * 1024 * 1024)
 
@@ -53,7 +54,6 @@ def upload_file():
             md5 = getfilemd5(os.path.join(parent, name))
             file_url = file.url(name)
             all_file[name] = {'url': file_url, 'md5': md5}
-    print(all_file)
     return render_template('index.html', form=form, allfile=all_file)
 
 
