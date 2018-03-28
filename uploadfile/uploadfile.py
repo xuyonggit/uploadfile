@@ -9,7 +9,7 @@ import configparser
 import hashlib
 
 
-myselfset = ARCHIVES = tuple('war txt'.split())
+myselfset = ARCHIVES = tuple('war txt zip'.split())
 cf = configparser.ConfigParser()
 cf.read('../config', encoding='utf-8')
 conf = cf.sections()
@@ -38,7 +38,7 @@ def getfilemd5(filename):
 
 
 @app.route('/', methods=['GET', 'POST'])
-def upload_file():
+async def upload_file():
     all_file = {}
     form = UploadForm()
     if form.validate_on_submit():
@@ -72,4 +72,4 @@ def clear():
 
 
 if __name__ == '__main__':
-    app.run(host=bindip)
+    app.run(host=bindip, threaded=True)
