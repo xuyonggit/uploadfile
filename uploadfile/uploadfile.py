@@ -38,7 +38,7 @@ def getfilemd5(filename):
 
 
 @app.route('/', methods=['GET', 'POST'])
-async def upload_file():
+def upload_file():
     all_file = {}
     form = UploadForm()
     if form.validate_on_submit():
