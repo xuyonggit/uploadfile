@@ -1,6 +1,6 @@
 web端一键上传文件到服务器
 =========================
-
+![](https://github.com/xuyonggit/uploadfile/blob/master/uploadfile/static/img/image.png)
 # 环境安装
 ```
 pip install -r requirements
@@ -20,12 +20,12 @@ python uploadfile.py
 配置：filetypes 空格隔开
 ## option <file_dir>
 服务器文件存储目录
-* 注意：windows 系统要用双反斜杠'\\'
+* 注意：windows 系统要用双反斜杠'\\\'
 ## option <app_bind_ip>
 绑定IP
 ## option <app_bind_port>
 绑定端口
 ## option <file_limit_size>
 文件上传大小限制 MB
-## clear_key
+## option <clear_key>
 页面清理文件口令
