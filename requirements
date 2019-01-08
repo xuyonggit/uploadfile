@@ -1,0 +1,4 @@
+flask==0.12.2
+flask_uploads==0.2.1
+flask_wtf==0.14.2
+WTForms==2.1

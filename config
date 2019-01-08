@@ -3,3 +3,11 @@
 file_dir = E:\\tmp\\uploadfile.temp
 # 服务bindIP
 app_bind_ip = 127.0.0.1
+# 服务bind Port
+app_bind_port = 5001
+# 支持文件类型，空格隔开
+filetypes = war txt zip
+# 文件上传最大限制（MB） default：64
+file_limit_size = 64
+# 文件清理口令
+clear_key = 喜羊羊

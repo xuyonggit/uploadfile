@@ -8,19 +8,24 @@ import os, json
 import configparser
 import hashlib
 
-
-myselfset = ARCHIVES = tuple('war txt zip'.split())
 cf = configparser.ConfigParser()
 cf.read('../config', encoding='utf-8')
 conf = cf.sections()
+filetypes = cf.get('app', 'filetypes')
+myselfset = ARCHIVES = tuple(filetypes.split())
+
 bindip = cf.get('app', 'app_bind_ip')
+bindport = cf.get('app', 'app_bind_port')
 app = Flask(__name__, static_folder='', static_path='')
 app.config['UPLOADS_DEFAULT_DEST'] = cf.get('app', 'file_dir')
 app.config['SECRET_KEY'] = 'a random string'
 file = UploadSet('file', ARCHIVES + SCRIPTS + IMAGES + myselfset)
 configure_uploads(app, file)
-patch_request_class(app, size=64 * 1024 * 1024)
-
+limit_size = cf.get('app', 'file_limit_size')
+if not limit_size:
+    limit_size = 64
+patch_request_class(app, size=int(limit_size) * 1024 * 1024)
+clear_key = cf.get('app', 'clear_key')
 
 class UploadForm(FlaskForm):
     file = FileField(validators=[
@@ -60,7 +65,7 @@ def upload_file():
 @app.route('/clear', methods=['POST'])
 def clear():
     data = json.loads(request.form.get('data'))
-    if data['key'] == '喜羊羊':
+    if data['key'] == clear_key:
         file_dir = os.path.join(app.config.get('UPLOADS_DEFAULT_DEST'), 'file')
         for i in os.listdir(file_dir):
             path_file = os.path.join(file_dir, i)
@@ -72,4 +77,4 @@ def clear():
 
 
 if __name__ == '__main__':
-    app.run(host=bindip, threaded=True)
+    app.run(host=bindip, port=bindport, threaded=True)
