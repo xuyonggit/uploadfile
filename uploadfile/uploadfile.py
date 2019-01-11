@@ -77,4 +77,4 @@ def clear():
 
 
 if __name__ == '__main__':
-    app.run(host=bindip, port=bindport, threaded=True)
+    app.run(host=bindip, port=int(bindport), threaded=True)
