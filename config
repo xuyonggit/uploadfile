@@ -1,8 +1,8 @@
 [app]
 # 服务器存储文件目录
-file_dir = E:\\tmp\\uploadfile.temp
+file_dir = /data
 # 服务bindIP
-app_bind_ip = 127.0.0.1
+app_bind_ip = 0.0.0.0
 # 服务bind Port
 app_bind_port = 5001
 # 支持文件类型，空格隔开
