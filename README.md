@@ -29,3 +29,6 @@ python uploadfile.py
 文件上传大小限制 MB
 ## option <clear_key>
 页面清理文件口令
+
+# 使用
+浏览器访问：http://ip:port
